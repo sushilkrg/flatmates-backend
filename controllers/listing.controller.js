@@ -41,13 +41,24 @@ export const addListing = async (req, res) => {
       cityName,
       nearestPlace,
       rent,
-      lookingforGender,
+      lookingForGender,
       lookingForAccoType,
       contactNumber,
       facilities,
     } = req.body;
-    let { img } = req.body;
+    let { image } = req.body;
     const userId = req.user?._id.toString(); //.toString()
+    console.log(
+      postedByName,
+      location,
+      cityName,
+      nearestPlace,
+      rent,
+      lookingForGender,
+      lookingForAccoType,
+      contactNumber,
+      facilities
+    );
 
     const user = await User.findById(userId);
     if (!user) {
@@ -61,18 +72,18 @@ export const addListing = async (req, res) => {
       !cityName ||
       !nearestPlace ||
       !rent ||
-      !lookingforGender ||
+      !lookingForGender ||
       !lookingForAccoType ||
       !contactNumber
       // ||
-      //  !img
+      //  !image
     ) {
       return res.status(400).json({ error: "User must fill required data" });
     }
 
-    if (img) {
-      const uploadedResponse = await cloudinary.uploader.upload(img);
-      img = uploadedResponse.secure_url;
+    if (image) {
+      const uploadedResponse = await cloudinary.uploader.upload(image);
+      image = uploadedResponse.secure_url;
     }
 
     const newListing = new Listing({
@@ -82,11 +93,11 @@ export const addListing = async (req, res) => {
       cityName,
       nearestPlace,
       rent,
-      lookingforGender,
+      lookingForGender,
       lookingForAccoType,
       contactNumber,
       facilities,
-      img,
+      image,
     });
     // const newListing = new Listing({
     //   postedBy: userId,
@@ -183,8 +194,8 @@ export const deleteListing = async (req, res) => {
         .json({ error: "You cannot delete other user listing" });
     }
 
-    if (listing.img) {
-      const imgId = listing.img.split("/").pop().split(".")[0];
+    if (listing?.image) {
+      const imgId = listing?.image.split("/").pop().split(".")[0];
       await cloudinary.uploader.destroy(imgId);
     }
 

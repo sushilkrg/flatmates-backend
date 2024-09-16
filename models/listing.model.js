@@ -48,7 +48,7 @@ const listingSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
-    img: {
+    image: {
       type: String,
       default: "",
     },
