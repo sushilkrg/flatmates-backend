@@ -19,10 +19,9 @@ export const getAllListings = async (req, res) => {
 export const getListingDetails = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
-
     const listingId = id;
     const listingDetails = await Listing.findById(listingId);
+
     if (!listingDetails) {
       return res.status(404).json({ message: "Listing not found" });
     }
@@ -64,7 +63,6 @@ export const addListing = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found." });
     }
-    // console.log(user);
 
     if (
       !postedByName ||
@@ -75,8 +73,6 @@ export const addListing = async (req, res) => {
       !lookingForGender ||
       !lookingForAccoType ||
       !contactNumber
-      // ||
-      //  !image
     ) {
       return res.status(400).json({ error: "User must fill required data" });
     }
@@ -99,19 +95,6 @@ export const addListing = async (req, res) => {
       facilities,
       image,
     });
-    // const newListing = new Listing({
-    //   postedBy: userId,
-    //   postedByName: req.body.postedByName,
-    //   location: req.body.location,
-    //   cityName: req.body.cityName,
-    //   nearestPlace: req.body.nearestPlace,
-    //   rent: req.body.rent,
-    //   lookingforGender: req.body.lookingforGender,
-    //   lookingForAccoType: req.body.lookingForAccoType,
-    //   contactNumber: req.body.contactNumber,
-    //   facilities: req.body.facilities,
-    //   img: img,
-    // });
 
     await newListing.save();
     await User.updateOne(
@@ -131,7 +114,6 @@ export const saveForLater = async (req, res) => {
   try {
     const userId = req.user._id;
     const { id: listingId } = req.params;
-    console.log(userId);
 
     const listing = await Listing.findById(listingId);
     if (!listing) {
@@ -156,7 +138,7 @@ export const saveForLater = async (req, res) => {
 
       res.status(200).json({
         updateSaveForLaterListings,
-        message: "User removed listing from saveForLater",
+        message: "removed from save for later",
         success: true,
       });
     } else {
@@ -169,7 +151,7 @@ export const saveForLater = async (req, res) => {
       await listing.save();
 
       res.status(200).json({
-        message: "User added this to saveForLater",
+        message: "Added to save for later",
         success: true,
       });
     }
@@ -204,7 +186,7 @@ export const deleteListing = async (req, res) => {
       { $pull: { myListings: listing?._id } }
     );
     await Listing.findByIdAndDelete(listingId);
-    return res.status(200).json({ message: "Listing deleted successfully" });
+    return res.status(200).json({listing, message: "Listing deleted successfully" });
   } catch (error) {
     console.log("Error in deleteListing", error);
     return res.status(500).json({ error: "Internal Server Error" });
@@ -221,8 +203,6 @@ export const getSaveForLaterListings = async (req, res) => {
     }
 
     const userSavedForLaterListings = user?.mySaveForLaterListings;
-    // todo - use populate
-
     if (userSavedForLaterListings.length == 0) {
       return res.status(200).json([]);
     }
@@ -254,7 +234,6 @@ export const getMyListings = async (req, res) => {
 export const searchListingsByCityname = async (req, res) => {
   try {
     const { cityname } = req.params;
-
     const allListings = await Listing.find();
 
     const filteredListings = allListings.filter((listing) =>
@@ -277,8 +256,7 @@ export const searchListingsByCityname = async (req, res) => {
 
 export const getFilteredListings = async (req, res) => {
   try {
-    const { lookingFor, cityname } = req.query;
-
+    const { cityname, lookingFor } = req.query;
     const listings = await Listing.find();
     let filteredListings;
 
@@ -303,18 +281,6 @@ export const getFilteredListings = async (req, res) => {
         listing.cityName.toLowerCase().includes(cityname.toLowerCase())
       );
     }
-
-    // if (priceMin) {
-    //   filteredProducts = filteredProducts.filter(p => p.price >= parseFloat(priceMin));
-    // }
-
-    // if (priceMax) {
-    //   filteredProducts = filteredProducts.filter(p => p.price <= parseFloat(priceMax));
-    // }
-
-    // const filteredData = data.filter(user => {
-    //   return user.age > 25 && user.city === 'New York';
-    // });
 
     res.status(200).json(filteredListings);
   } catch (error) {
