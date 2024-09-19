@@ -47,17 +47,17 @@ export const addListing = async (req, res) => {
     } = req.body;
     let { image } = req.body;
     const userId = req.user?._id.toString(); //.toString()
-    console.log(
-      postedByName,
-      location,
-      cityName,
-      nearestPlace,
-      rent,
-      lookingForGender,
-      lookingForAccoType,
-      contactNumber,
-      facilities
-    );
+    // console.log(
+    //   postedByName,
+    //   location,
+    //   cityName,
+    //   nearestPlace,
+    //   rent,
+    //   lookingForGender,
+    //   lookingForAccoType,
+    //   contactNumber,
+    //   facilities
+    // );
 
     const user = await User.findById(userId);
     if (!user) {
