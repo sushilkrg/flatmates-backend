@@ -4,7 +4,7 @@ import User from "../models/user.model.js";
 
 export const getAllListings = async (req, res) => {
   try {
-    const listings = await Listing.find();
+    const listings = await Listing.find().sort({ createdAt: -1 });
 
     if (listings.length == 0) {
       return res.status(200).json([]);
@@ -47,18 +47,7 @@ export const addListing = async (req, res) => {
     } = req.body;
     let { image } = req.body;
     const userId = req.user?._id.toString(); //.toString()
-    // console.log(
-    //   postedByName,
-    //   location,
-    //   cityName,
-    //   nearestPlace,
-    //   rent,
-    //   lookingForGender,
-    //   lookingForAccoType,
-    //   contactNumber,
-    //   facilities
-    // );
-
+    
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found." });
@@ -140,6 +129,7 @@ export const saveForLater = async (req, res) => {
         updateSaveForLaterListings,
         message: "removed from save for later",
         success: true,
+        listing
       });
     } else {
       // add to saveForLater
@@ -153,6 +143,7 @@ export const saveForLater = async (req, res) => {
       res.status(200).json({
         message: "Added to save for later",
         success: true,
+        listing
       });
     }
   } catch (error) {
@@ -234,7 +225,7 @@ export const getMyListings = async (req, res) => {
 export const searchListingsByCityname = async (req, res) => {
   try {
     const { cityname } = req.params;
-    const allListings = await Listing.find();
+    const allListings = await Listing.find().sort({ createdAt: -1 });
 
     const filteredListings = allListings.filter((listing) =>
       listing.cityName.toLowerCase().includes(cityname.toLowerCase())
