@@ -11,7 +11,7 @@ export const getAllListings = async (req, res) => {
     }
     return res.status(200).json(listings);
   } catch (error) {
-    console.log("Error in getAllListings", error);
+    console.error("Error in getAllListings", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -27,7 +27,7 @@ export const getListingDetails = async (req, res) => {
     }
     return res.status(200).json(listingDetails);
   } catch (error) {
-    console.log("Error in getListingDetails", error);
+    console.error("Error in getListingDetails", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -94,7 +94,7 @@ export const addListing = async (req, res) => {
       .status(200)
       .json({ newListing, message: "New Listing added successfully" });
   } catch (error) {
-    console.log("Error in addListing", error);
+    console.error("Error in addListing", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -147,7 +147,7 @@ export const saveForLater = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log("Error in saveForLater", error);
+    console.error("Error in saveForLater", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -179,7 +179,7 @@ export const deleteListing = async (req, res) => {
     await Listing.findByIdAndDelete(listingId);
     return res.status(200).json({listing, message: "Listing deleted successfully" });
   } catch (error) {
-    console.log("Error in deleteListing", error);
+    console.error("Error in deleteListing", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -200,7 +200,7 @@ export const getSaveForLaterListings = async (req, res) => {
 
     return res.status(200).json(userSavedForLaterListings);
   } catch (error) {
-    console.log("Error in getSaveForLaterListings", error);
+    console.error("Error in getSaveForLaterListings", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -217,7 +217,7 @@ export const getMyListings = async (req, res) => {
     const myListings = user?.myListings;
     res.status(200).json(myListings);
   } catch (error) {
-    console.log("Error in getMyListings", error);
+    console.error("Error in getMyListings", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -237,7 +237,7 @@ export const searchListingsByCityname = async (req, res) => {
 
     return res.status(200).json({ filteredListings });
   } catch (error) {
-    console.log(
+    console.error(
       "Error in searchListingsByCityname controller: ",
       error.message
     );
@@ -275,7 +275,7 @@ export const getFilteredListings = async (req, res) => {
 
     res.status(200).json(filteredListings);
   } catch (error) {
-    console.log("Error in filterListing controller:", error.message);
+    console.error("Error in filterListing controller:", error.message);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -292,7 +292,7 @@ export const getFlatmate = async (req, res) => {
     }
     return res.status(200).json(flatmateListings);
   } catch (error) {
-    console.log("Error in getFlatmate controller:", error.message);
+    console.error("Error in getFlatmate controller:", error.message);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -309,7 +309,7 @@ export const getRoommate = async (req, res) => {
     }
     return res.status(200).json(roommateListings);
   } catch (error) {
-    console.log("Error in getRoommate controller: ", error.message);
+    console.error("Error in getRoommate controller: ", error.message);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };

@@ -22,7 +22,7 @@ export const isAuthenticated = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    console.log("Error is isAuthenticated middleware", error.message);
+    console.error("Error is isAuthenticated middleware", error.message);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };

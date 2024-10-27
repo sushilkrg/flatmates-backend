@@ -17,7 +17,7 @@ import {
 const router = express.Router();
 
 router.get("/", getAllListings);
-router.get("/details/:id", isAuthenticated, getListingDetails);
+router.get("/details/:id", getListingDetails);
 router.post("/add", isAuthenticated, addListing);
 router.post("/saveforlater/:id", isAuthenticated, saveForLater);
 router.delete("/:id", isAuthenticated, deleteListing);
