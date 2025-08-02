@@ -8,6 +8,7 @@ import authRoutes from "./routes/auth.route.js";
 import listingRoutes from "./routes/listing.route.js";
 
 import connectDB from "./database/connectDB.js";
+import { getServerHealth } from "./lib/utils/getServerHealth.js";
 dotenv.config();
 
 cloudinary.config({
@@ -33,6 +34,7 @@ app.use(cors(corsOptions));
 // routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/listing", listingRoutes);
+app.use("/api/v1/health", getServerHealth);
 
 app.listen(PORT, () => {
   console.log(`Server running at port ${PORT}`);
